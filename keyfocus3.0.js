@@ -283,16 +283,16 @@ var KeyFocus = function () {
         console.log('中间件-------', middleware[0]);
 
     };
-    /**
-     *@method 设置探测方向
-     *@for KeyFocus
-     *@param{*} direction输入方向   仅支持vertical(纵向) horizontal水平
-     */
-    this.setGuessDir = function (direction) {
-        if (direction === 'horizontal' || direction === 'vertical') {
-            this.guessDirection = direction;
-        }
-    };
+    // /**
+    //  *@method 设置探测方向
+    //  *@for KeyFocus
+    //  *@param{*} direction输入方向   仅支持vertical(纵向) horizontal水平
+    //  */
+    // this.setGuessDir = function (direction) {
+    //     if (direction === 'horizontal' || direction === 'vertical') {
+    //         this.guessDirection = direction;
+    //     }
+    // };
 };
 var keyfocus = new KeyFocus();
 
