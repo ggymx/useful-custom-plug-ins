@@ -43,7 +43,7 @@
     //设置初始光标
     keyfocus.setDefaultFocusObj(defaultFocus);
  ```
-<mark>keyfocus下相关的API</mark>：
+#### keyfocus下相关的API：
 setKeyboard(keyboard)：设置光标逻辑
 setDefaultFocusObj(defFocus)：设置默认光标
 updateKey(key,value)：修改某个元素的跳转关系（某场景下使用）
@@ -61,5 +61,13 @@ openDebug(bgColor, opacity)：开启debug模式：当前界面会有个浮框显
 setGoBackConfig(goBackUrl, pageContext, middleware) ：配置按返回键时返回的页面，goBackUrl：返回页面的url，pageContext：当前页面 middleware：跳转前需要执行的函数（如打印日志等）
 
 >keyfocus.setGoBackConfig([[${userRedis.backUrl}]], [logger]);
+------------
+#### sTBConfig（获取盒子配置）下相关的API：
+sTBConfig.getSTBType() 获取盒子型号，没有则返回null
+sTBConfig.bindCssFile(cssURL, ele) 根据盒子型号/分辨率加载相应的样式表；
+cssURL：css所在的文件夹，<mark>默认1280分辨率加载该文件夹下的app1280.css，1920分辨率加载app1920.css</mark>
+ele：引入样式表的link标签的id
+
+>sTBConfig.bindCssFile("/webpay/css/", $("sc"));
 
 ### covertToInput.js（div转input插件）

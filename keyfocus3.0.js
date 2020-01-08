@@ -167,52 +167,52 @@ var KeyFocus = function () {
                 }
             }
         } else {
-            //如果光标系统中压根没有配置此元素，或者无任何方向配置,通常出现在根据后端返回数据批量动态设置id的情况
-            console.log('测试---------------', this.focusObject.split(''));
-            //将a14转变为['a','1','4'];
-            var guessCanUserIdStrArr = this.focusObject.split('');
-            if (direct == 'd') {
-                if (this.guessDirection === 'vertical') {
-                    //若根据id类似a04 a14 a24,且a14键盘系统中不存在或无方向，则找a24,否则找a34...
-                    guessCanUserIdStrArr[1] = parseInt(guessCanUserIdStrArr[1]) + 1;
-                } else {
-                    //若根据id类似a04 a14 a24,且a14键盘系统中不存在或无方向，则找a13,否则找a12...
-                    guessCanUserIdStrArr[2] = parseInt(guessCanUserIdStrArr[2]) - 1;
-                }
+            // //如果光标系统中压根没有配置此元素，或者无任何方向配置,通常出现在根据后端返回数据批量动态设置id的情况
+            // console.log('测试---------------', this.focusObject.split(''));
+            // //将a14转变为['a','1','4'];
+            // var guessCanUserIdStrArr = this.focusObject.split('');
+            // if (direct == 'd') {
+            //     if (this.guessDirection === 'vertical') {
+            //         //若根据id类似a04 a14 a24,且a14键盘系统中不存在或无方向，则找a24,否则找a34...
+            //         guessCanUserIdStrArr[1] = parseInt(guessCanUserIdStrArr[1]) + 1;
+            //     } else {
+            //         //若根据id类似a04 a14 a24,且a14键盘系统中不存在或无方向，则找a13,否则找a12...
+            //         guessCanUserIdStrArr[2] = parseInt(guessCanUserIdStrArr[2]) - 1;
+            //     }
 
-            }
-            if (direct == 'u') {
-                if (this.guessDirection === 'vertical') {
-                    guessCanUserIdStrArr[1] = parseInt(guessCanUserIdStrArr[1]) - 1;
-                } else {
-                    guessCanUserIdStrArr[2] = parseInt(guessCanUserIdStrArr[2]) - 1;
-                }
+            // }
+            // if (direct == 'u') {
+            //     if (this.guessDirection === 'vertical') {
+            //         guessCanUserIdStrArr[1] = parseInt(guessCanUserIdStrArr[1]) - 1;
+            //     } else {
+            //         guessCanUserIdStrArr[2] = parseInt(guessCanUserIdStrArr[2]) - 1;
+            //     }
 
-            }
-            var guessCanUserId = guessCanUserIdStrArr.join('');
-            console.log('猜测可用的id--------------', guessCanUserId);
-            this.focusObject = guessCanUserId;
-            if (K(guessCanUserId)) {
-                //如果预测的id存在的话，则聚焦到此
-                realCanUseEle = guessCanUserId;
-                //重置相应的计时次数
-                count = 0;
-                guessCount = 0;
-                K(guessCanUserId).focus();
+            // }
+            // var guessCanUserId = guessCanUserIdStrArr.join('');
+            // console.log('猜测可用的id--------------', guessCanUserId);
+            // this.focusObject = guessCanUserId;
+            // if (K(guessCanUserId)) {
+            //     //如果预测的id存在的话，则聚焦到此
+            //     realCanUseEle = guessCanUserId;
+            //     //重置相应的计时次数
+            //     count = 0;
+            //     guessCount = 0;
+            //     K(guessCanUserId).focus();
 
-            } else {
-                console.log('再一次没找到');
-                //最多找三次
-                if (guessCount > 5) {
-                    console.log('可以使用的id----------', realCanUseEle);
-                    K(realCanUseEle).focus();
-                    this.focusObject = realCanUseEle;
-                    count = 0;
-                    return;
-                }
-                guessCount++;
-                this.getItemByCode(direct);
-            }
+            // } else {
+            //     console.log('再一次没找到');
+            //     //最多找三次
+            //     if (guessCount > 5) {
+            //         console.log('可以使用的id----------', realCanUseEle);
+            //         K(realCanUseEle).focus();
+            //         this.focusObject = realCanUseEle;
+            //         count = 0;
+            //         return;
+            //     }
+            //     guessCount++;
+            //     this.getItemByCode(direct);
+            // }
         }
         //若开启调试模式，则实时更新debugString
         if (document.getElementById("debug")) {
@@ -454,137 +454,137 @@ var STBConfig = function () {
 var sTBConfig = new STBConfig();
 
 //根据后台数据动态创建数据的keyboard
-var BatchCreateKey = function () {
-    //动态创建数据的keyboard
-    this.secondObj = {};
-    // console.log('keysArr-------------',secondMap[Object.keys(secondMap)[0]]);
-    //得到根据后台数据动态创建的keyboard,upTarget(首列的上方向配置),downTarget（末列的下方向配置）
-    this.getDynamicKdByMap = function (backEndData, upTarget, downTarget) {
-        var secondMap = backEndData;
-        // //定义传入的数据的外层循环的数组
-        // var oneLoop=null;
-        if (typeof secondMap === 'object') {
-            //object的格式类似于:{'a':[],'b':[],...}
-            console.log('传入的二维数组的类型---对象');
-            for (var i1 = 0; i1 < Object.keys(secondMap).length; i1++) {
-                var curItem = secondMap[Object.keys(secondMap)[i1]];
-                for (var i2 = 0; i2 < curItem.length; i2++) {
-                    curItemKey = ('a' + i1) + i2;
-                    //初始化二级菜单的key
-                    this.secondObj[curItemKey] = {};
-                    //如果为首元素且不止一个元素
-                    if (i2 == 0) {
-                        //最左边的元素只有右方向有元素
-                        if (i2 < curItem.length - 1) {
-                            this.secondObj[curItemKey]['r'] = ('a' + i1) + (i2 + 1);
-                        }
-                    } else if (i2 == curItem.length - 1) {
-                        //最右边的元素只有左方向有元素
-                        if (curItem.length > 1) {
-                            this.secondObj[curItemKey]['l'] = ('a' + i1) + (i2 - 1);
-                        };
-                    } else {
-                        //中间元素
-                        this.secondObj[curItemKey]['l'] = ('a' + i1) + (i2 - 1);
-                        this.secondObj[curItemKey]['r'] = ('a' + i1) + (i2 + 1);
-                    }
+// var BatchCreateKey = function () {
+//     //动态创建数据的keyboard
+//     this.secondObj = {};
+//     // console.log('keysArr-------------',secondMap[Object.keys(secondMap)[0]]);
+//     //得到根据后台数据动态创建的keyboard,upTarget(首列的上方向配置),downTarget（末列的下方向配置）
+//     this.getDynamicKdByMap = function (backEndData, upTarget, downTarget) {
+//         var secondMap = backEndData;
+//         // //定义传入的数据的外层循环的数组
+//         // var oneLoop=null;
+//         if (typeof secondMap === 'object') {
+//             //object的格式类似于:{'a':[],'b':[],...}
+//             console.log('传入的二维数组的类型---对象');
+//             for (var i1 = 0; i1 < Object.keys(secondMap).length; i1++) {
+//                 var curItem = secondMap[Object.keys(secondMap)[i1]];
+//                 for (var i2 = 0; i2 < curItem.length; i2++) {
+//                     curItemKey = ('a' + i1) + i2;
+//                     //初始化二级菜单的key
+//                     this.secondObj[curItemKey] = {};
+//                     //如果为首元素且不止一个元素
+//                     if (i2 == 0) {
+//                         //最左边的元素只有右方向有元素
+//                         if (i2 < curItem.length - 1) {
+//                             this.secondObj[curItemKey]['r'] = ('a' + i1) + (i2 + 1);
+//                         }
+//                     } else if (i2 == curItem.length - 1) {
+//                         //最右边的元素只有左方向有元素
+//                         if (curItem.length > 1) {
+//                             this.secondObj[curItemKey]['l'] = ('a' + i1) + (i2 - 1);
+//                         };
+//                     } else {
+//                         //中间元素
+//                         this.secondObj[curItemKey]['l'] = ('a' + i1) + (i2 - 1);
+//                         this.secondObj[curItemKey]['r'] = ('a' + i1) + (i2 + 1);
+//                     }
 
-                    if (i1 == 0) {
-                        //第一行
-                        if (upTarget) {
-                            console.log('传入了上方向配置---------');
-                            this.secondObj[curItemKey]['u'] = upTarget;
-                        }
-                        this.secondObj[curItemKey]['d'] = 'a' + (i1 + 1) + i2;
-                    } else if (i1 == Object.keys(secondMap).length - 1) {
-                        //最后一行
-                        if (downTarget) {
-                            this.secondObj[curItemKey]['d'] = downTarget;
-                        }
-                        this.secondObj[curItemKey]['u'] = 'a' + (i1 - 1) + i2;
-                    } else {
-                        //中间行
-                        this.secondObj[curItemKey]['u'] = 'a' + (i1 - 1) + i2;
-                        this.secondObj[curItemKey]['d'] = 'a' + (i1 + 1) + i2;
-                    }
-                }
-            }
-        } else if (Array.isArray(secondMap)) {
-            //object的格式类似于:[[],[],...]
-            for (var i1 = 0; i1 < secondMap.length; i1++) {
-                var curItem = secondMap[i1];
-                for (var i2 = 0; i2 < curItem.length; i2++) {
-                    curItemKey = ('a' + i1) + i2;
-                    //初始化二级菜单的key
-                    this.secondObj[curItemKey] = {};
-                    //如果为首元素且不止一个元素
-                    if (i2 == 0) {
-                        //最左边的元素只有右方向有元素
-                        if (i2 < curItem.length - 1) {
-                            this.secondObj[curItemKey]['r'] = ('a' + i1) + (i2 + 1);
-                        }
-                    } else if (i2 == curItem.length - 1) {
-                        //最右边的元素只有左方向有元素
-                        if (curItem.length > 1) {
-                            this.secondObj[curItemKey]['l'] = ('a' + i1) + (i2 - 1);
-                        };
-                    } else {
-                        //中间元素
-                        this.secondObj[curItemKey]['l'] = ('a' + i1) + (i2 - 1);
-                        this.secondObj[curItemKey]['r'] = ('a' + i1) + (i2 + 1);
-                    }
+//                     if (i1 == 0) {
+//                         //第一行
+//                         if (upTarget) {
+//                             console.log('传入了上方向配置---------');
+//                             this.secondObj[curItemKey]['u'] = upTarget;
+//                         }
+//                         this.secondObj[curItemKey]['d'] = 'a' + (i1 + 1) + i2;
+//                     } else if (i1 == Object.keys(secondMap).length - 1) {
+//                         //最后一行
+//                         if (downTarget) {
+//                             this.secondObj[curItemKey]['d'] = downTarget;
+//                         }
+//                         this.secondObj[curItemKey]['u'] = 'a' + (i1 - 1) + i2;
+//                     } else {
+//                         //中间行
+//                         this.secondObj[curItemKey]['u'] = 'a' + (i1 - 1) + i2;
+//                         this.secondObj[curItemKey]['d'] = 'a' + (i1 + 1) + i2;
+//                     }
+//                 }
+//             }
+//         } else if (Array.isArray(secondMap)) {
+//             //object的格式类似于:[[],[],...]
+//             for (var i1 = 0; i1 < secondMap.length; i1++) {
+//                 var curItem = secondMap[i1];
+//                 for (var i2 = 0; i2 < curItem.length; i2++) {
+//                     curItemKey = ('a' + i1) + i2;
+//                     //初始化二级菜单的key
+//                     this.secondObj[curItemKey] = {};
+//                     //如果为首元素且不止一个元素
+//                     if (i2 == 0) {
+//                         //最左边的元素只有右方向有元素
+//                         if (i2 < curItem.length - 1) {
+//                             this.secondObj[curItemKey]['r'] = ('a' + i1) + (i2 + 1);
+//                         }
+//                     } else if (i2 == curItem.length - 1) {
+//                         //最右边的元素只有左方向有元素
+//                         if (curItem.length > 1) {
+//                             this.secondObj[curItemKey]['l'] = ('a' + i1) + (i2 - 1);
+//                         };
+//                     } else {
+//                         //中间元素
+//                         this.secondObj[curItemKey]['l'] = ('a' + i1) + (i2 - 1);
+//                         this.secondObj[curItemKey]['r'] = ('a' + i1) + (i2 + 1);
+//                     }
 
-                    if (i1 == 0) {
-                        //第一行
-                        if (upTarget) {
-                            console.log('传入了上方向配置---------');
-                            this.secondObj[curItemKey]['u'] = upTarget;
-                        }
-                        this.secondObj[curItemKey]['d'] = 'a' + (i1 + 1) + i2;
-                    } else if (i1 == secondMap.length - 1) {
-                        //最后一行
-                        if (downTarget) {
-                            this.secondObj[curItemKey]['d'] = downTarget;
-                        }
-                        this.secondObj[curItemKey]['u'] = 'a' + (i1 - 1) + i2;
-                    } else {
-                        //中间行
-                        this.secondObj[curItemKey]['u'] = 'a' + (i1 - 1) + i2;
-                        this.secondObj[curItemKey]['d'] = 'a' + (i1 + 1) + i2;
-                    }
-                }
-            }
-        }
-        return this.secondObj;
-    }
-    //一维数组动态数据绑定
-    /**
-     *@method 根据后台数据动态创建数据的keyboard
-     *@for BatchCreateKey
-     *@param{*} backEndData传入的后端一维数组 separation：每行的数据个数（number）
-     @return 实时更新的串
-     */
-    this.getDynamicKdByList = function (backEndData, uptarget, separation) {
-        for (var i = 0; i < backEndData.length; i++) {
-            var curItemKey = 'a' + i;
-            this.secondObj[curItemKey] = {
-                'u': 'a' + (i - separation),
-                'd': 'a' + (i + separation),
-                'l': 'a' + (i - 1),
-                'r': 'a' + (i + 1)
-            }
-            if (separation && typeof separation == 'number') {
-                //判断是否是第一行
-                if (i < separation && uptarget) {
-                    this.secondObj[curItemKey]['u'] = uptarget;
-                }
-            }
-        }
-        return this.secondObj;
-    }
+//                     if (i1 == 0) {
+//                         //第一行
+//                         if (upTarget) {
+//                             console.log('传入了上方向配置---------');
+//                             this.secondObj[curItemKey]['u'] = upTarget;
+//                         }
+//                         this.secondObj[curItemKey]['d'] = 'a' + (i1 + 1) + i2;
+//                     } else if (i1 == secondMap.length - 1) {
+//                         //最后一行
+//                         if (downTarget) {
+//                             this.secondObj[curItemKey]['d'] = downTarget;
+//                         }
+//                         this.secondObj[curItemKey]['u'] = 'a' + (i1 - 1) + i2;
+//                     } else {
+//                         //中间行
+//                         this.secondObj[curItemKey]['u'] = 'a' + (i1 - 1) + i2;
+//                         this.secondObj[curItemKey]['d'] = 'a' + (i1 + 1) + i2;
+//                     }
+//                 }
+//             }
+//         }
+//         return this.secondObj;
+//     }
+//     //一维数组动态数据绑定
+//     /**
+//      *@method 根据后台数据动态创建数据的keyboard
+//      *@for BatchCreateKey
+//      *@param{*} backEndData传入的后端一维数组 separation：每行的数据个数（number）
+//      @return 实时更新的串
+//      */
+//     this.getDynamicKdByList = function (backEndData, uptarget, separation) {
+//         for (var i = 0; i < backEndData.length; i++) {
+//             var curItemKey = 'a' + i;
+//             this.secondObj[curItemKey] = {
+//                 'u': 'a' + (i - separation),
+//                 'd': 'a' + (i + separation),
+//                 'l': 'a' + (i - 1),
+//                 'r': 'a' + (i + 1)
+//             }
+//             if (separation && typeof separation == 'number') {
+//                 //判断是否是第一行
+//                 if (i < separation && uptarget) {
+//                     this.secondObj[curItemKey]['u'] = uptarget;
+//                 }
+//             }
+//         }
+//         return this.secondObj;
+//     }
 
-}
-var batchCreateKey = new BatchCreateKey();
+// }
+// var batchCreateKey = new BatchCreateKey();
 
 //h5环境下调用h5键盘监听
 window ? keyfocus.bindKeyAction("H5", "") : keyfocus.bindKeyAction("android", "key");
